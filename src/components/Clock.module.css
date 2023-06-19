@@ -1,0 +1,11 @@
+.digit {
+  position: absolute;
+  padding: 0 .2rem;
+}
+
+.arrow {
+  position: absolute;
+  transform-origin: top;
+  left: 50%;
+  top: 50%;
+}
