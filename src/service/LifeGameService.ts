@@ -1,6 +1,6 @@
 import { matrixSum } from "../utils/number-functions";
 
-export default class LimeGameService {
+export default class LifeGameService {
   constructor(private _numbers: number[][]) {
   }
 
