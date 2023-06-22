@@ -5,7 +5,7 @@ import { CellSizeState } from "../types";
 const { dimension, matrixSizePercent } = lifeConfig
 
 function calcCellSize(): number {
-  return Math.min(window.innerHeight, window.innerWidth) / dimension * (matrixSizePercent / 100);
+  return Math.min(window.innerHeight, window.innerWidth) / dimension * (matrixSizePercent / 100) - 1;
 }
 
 const initialState: CellSizeState = {

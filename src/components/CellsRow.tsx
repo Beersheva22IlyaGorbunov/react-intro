@@ -9,7 +9,8 @@ const CellsRow: React.FC<Props> = ({ row, size }) => {
 
   function getDivs(): ReactNode {
     return row.map((num, index) => 
-      <div key={index} style={{backgroundColor: num ? "black" : "white", width: `${size}px`, height: `${size}px`, borderBottom: "1px solid gray", borderRight: "1px solid gray"}}></div>)
+      <div key={index} style={{backgroundColor: num ? "black" : "white", width: `${size}px`, height: `${size}px`, 
+      borderBottom: "1px solid gray", borderRight: "1px solid gray", boxSizing: "border-box"}}></div>)
   }
 
   return (

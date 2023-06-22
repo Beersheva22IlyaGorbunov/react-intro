@@ -8,19 +8,22 @@ type Props = {
 
 const statusesMap: Map<StatusType, CSSProperties> = new Map([
   ["error", {
-    backgroundColor: "red"
+    backgroundColor: "#FF5C5C"
   }],
   ["warning", {
     backgroundColor: "yellow"
   }],
   ["success", {
-    backgroundColor: "green"
+    backgroundColor: "#03C04A"
   }]
 ])
 
 const Alert: React.FC<Props> = ({ status, message }) => {
   return (
-    <p style={statusesMap.get(status)}>
+    <p style={{
+        ...statusesMap.get(status),
+        padding: ".3rem .6rem"
+      }}>
       {message}
     </p>
   )
