@@ -1,3 +1,5 @@
+import { matrixSum } from "../utils/number-functions";
+
 export default class LimeGameService {
   constructor(private _numbers: number[][]) {
   }
@@ -7,44 +9,34 @@ export default class LimeGameService {
   }
 
   next(): number[][] {
-    this._numbers = this._numbers.map((_, row) => this._getUpdatedRow(row))
+    this._numbers = this._numbers.map((_, row) => this._getUpdatedRow(row));
     return this._numbers;
   }
 
-  private _getUpdatedRow(row: number): number[] {
-    return this._numbers[row].map((_, col) => this._getUpdatedCell(row, col))
+  private _getUpdatedRow(index: number): number[] {
+    return this._numbers[index].map((_, col) => this._getUpdatedCell(index, col));
   }
 
   private _getUpdatedCell(row: number, col: number): number {
-    let state = this._numbers[row][col];
-    const liveNeighbours = this._getLiveNeighbours(row, col);
-    if (state === 0) {
-      if (liveNeighbours === 3) {
-        state = 1
-      }
-    } else {
-      if (liveNeighbours < 2 || liveNeighbours > 3) {
-        state = 0
-      }
-    }
-    return state;
+    const cell = this._numbers[row][col];
+    const partialMatrix = this.partialMatrix(row, col);
+    const sum = matrixSum(partialMatrix) - cell;
+    return cell ? getCellFromLive(sum) : getCellFromDead(sum);
   }
 
-  private _getLiveNeighbours(row: number, col: number): number {
-    let liveNeighbours = 0;
-    if (this._numbers[row - 1] && this._numbers[row - 1][col] === 1) {
-      liveNeighbours++;
-    }
-    if (this._numbers[row][col + 1] === 1) {
-      liveNeighbours++;
-    }
-    if (this._numbers[row + 1] && this._numbers[row + 1][col] === 1) {
-      liveNeighbours++;
-    }
-    if (this._numbers[row][col - 1] === 1) {
-      liveNeighbours++;
-    }
-    return liveNeighbours;
+  private partialMatrix(row: number, col: number): number[][] {
+    const indexStart = !col ? 0 : col - 1;
+    const indexEnd = col === this._numbers[0].length - 1 ? col + 1 : col + 2;
+    return [row - 1, row, row + 1].map(i => this._numbers[i] 
+      ? this._numbers[i].slice(indexStart, indexEnd)
+      : [0]);
   }
+}
 
+function getCellFromLive(sum: number): number {
+  return +(sum >= 2 && sum <=3);
+}
+
+function getCellFromDead(sum: number): number {
+  return +(sum === 3);
 }

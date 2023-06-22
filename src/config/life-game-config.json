@@ -1,4 +1,5 @@
 {
   "dimension": 50,
-  "tick": 400
+  "tick": 400,
+  "matrixSizePercent": 100
 }

@@ -4,12 +4,10 @@ import LifeGameService from '../service/LifeGameService';
 import { getRandomIntMatrix } from '../utils/random';
 import CellsMatrix from './CellsMatrix';
 
-const ROW_SIZE_COEF = 0.9;
-
 const LifeMatrix: React.FC = () => {
   const lifeGameService = useRef<LifeGameService>();
   const [matrix, setMatrix] = useState<number [][]>([]);
-  const [screenSize, setScreenSize] = useState<number>(getMinimalSize())
+  
   
   function tickAction(): void {
     if (!lifeGameService.current) {
@@ -22,26 +20,13 @@ const LifeMatrix: React.FC = () => {
   }
 
   useEffect(() => {
-    function handleScreenResize() {
-      setScreenSize(getMinimalSize())
-    }
-
-    window.addEventListener('resize', handleScreenResize)
-
     const intervalId = setInterval(tickAction, lifeConfig.tick);
-    return () => {
-      clearInterval(intervalId);
-      window.removeEventListener('resize', handleScreenResize);
-    }
+    return () => clearInterval(intervalId);
   }, [])
 
   return (
-    <CellsMatrix matrix={matrix} size={screenSize * ROW_SIZE_COEF} />
+    <CellsMatrix matrix={matrix} />
   )
-}
-
-function getMinimalSize() {
-  return window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight;
 }
 
 export default LifeMatrix
