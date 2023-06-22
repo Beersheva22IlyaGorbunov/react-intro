@@ -1,7 +1,0 @@
-{
-  "minLifes": 1,
-  "maxLifes": 3,
-  "dimension": 50,
-  "tick": 400,
-  "matrixSizePercent": 100
-}

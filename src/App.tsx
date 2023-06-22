@@ -1,30 +1,85 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import './App.css';
-import Lifes from './components/Lifes';
-import { updateCellSize } from './redux/slices/cellSizeSlice';
-import { updateDirection } from './redux/slices/flexDirectionSlice';
+import React, { ReactElement } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import Navigator from "./components/navigators/Navigator";
+import Customers from "./pages/Customers";
+import Home from "./pages/Home";
+import Orders from "./pages/Orders";
+import Products from "./pages/Products";
+import ShoppingCart from "./pages/ShoppingCart";
+import SignIn from "./pages/SignIn";
+import SignOut from "./pages/SignOut";
+
+export type MenuPoint = {
+  title: string;
+  path: string;
+  element: ReactElement;
+}
+
+const menuPoints: MenuPoint[] = [
+  {
+    title: "Home",
+    element: <Home />,
+    path: ""
+  }
+]
+
+const nonAuthenticatedPoints: MenuPoint[] = [
+  {
+    title: "Sign In",
+    element: <SignIn />,
+    path: "signin"
+  }
+]
+
+const adminPoints: MenuPoint[] = [
+  {
+    title: "Customers",
+    element: <Customers />,
+    path: "customers"
+  },
+  {
+    title: "Orders",
+    element: <Orders />,
+    path: "orders"
+  }
+]
+
+const userPoints: MenuPoint[] = [
+  {
+    title: "ShoppingCart",
+    element: <ShoppingCart />,
+    path: "shoppingcart"
+  }
+]
+
+const authenticatedPoints: MenuPoint[] = [
+  {
+    title: "Sign Out",
+    element: <SignOut />,
+    path: "signout"
+  }
+]
 
 const App: React.FC = () => {
-  const dispatch = useDispatch();
-  
-  useEffect(() => {
-    function handleScreenResize() {
-      dispatch(updateCellSize());
-      dispatch(updateDirection());
-    }
-
-    window.addEventListener('resize', handleScreenResize)
-    return () => {
-      window.removeEventListener('resize', handleScreenResize);
-    }
-  }, [])
-
   return (
-    <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", height: "100vh", width: "100vw"}}>
-      <Lifes />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigator menuPoints={menuPoints} />}>
+          {menuPoints.map((point, index) => 
+            <Route key={index} index={point.path === ""} path={point.path}  element={<Home />} />)}
+          <Route
+            path="*"
+            element={
+              <div>
+                <h2>404 Page not found</h2>
+              </div>
+            }
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
