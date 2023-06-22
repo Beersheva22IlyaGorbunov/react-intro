@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import InputResult from '../../model/common/InputResultType'
+import { InputResult } from './types'
 import Alert from './Alert'
 
 type Props = {
