@@ -1,3 +1,42 @@
+:root {
+  --primary-color: black;
+  --secondary-color: #a7edd6;
+  --third-color: #c5ebdfb9;
+  --accent-color: #d2b5e2;
+}
+
+input, button {
+  border: 1px solid var(--secondary-color);
+  background: none;
+  padding: .3rem .6rem;
+  border-radius: .5rem;
+}
+
+h1, p {
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover, .navigator-item__link:hover {
+  background-color: var(--third-color);
+}
+
+.application-container {
+  height: 100vh;
+}
+
+.content-container {
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .navigator-list {
   list-style: none;
   display: flex;
@@ -7,12 +46,27 @@
 
 .navigator-item__link {
   color: black;
-  border: 2px solid salmon;
+  border: 2px solid var(--secondary-color);
   text-decoration: none;
   padding: .3rem .6rem;
   border-radius: .5rem;
 }
 
 .navigator-item__link.active {
-  background-color: coral;
+  background-color: var(--accent-color);
+}
+
+.sign-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 2px solid var(--accent-color);
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.buttons-block {
+  display: flex;
+  gap: .5rem;
+  justify-content: flex-end;
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { InputResult } from './types'
 import Alert from './Alert'
+import "./Input.css"
 
 type Props = {
   placeholder: string
@@ -27,8 +28,8 @@ const Input: React.FC<Props> = ({ placeholder, buttonTitle, submitFn, type }) =>
   }
   
   return (
-    <div>
-      <input type={type ?? "text"} value={inputText} onChange={handleInputChange} placeholder={placeholder} />
+    <div className='input-form'>
+      <input type={type ?? "text"} onKeyDown={e => e.key === "Enter" && handleSubmit()} onChange={handleInputChange} placeholder={placeholder} />
       <button onClick={handleSubmit} disabled={!inputText}>{buttonTitle ?? "Go"}</button>
       {inputRes && <Alert status={inputRes.status} message={inputRes.message} />}
     </div>

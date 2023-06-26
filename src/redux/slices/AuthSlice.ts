@@ -1,19 +1,36 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthRoles, AuthState } from "../types";
+import { AuthRole, AuthState, isRole } from "../types";
+
+const AUTH_ITEM_STORAGE = "auth";
+
+function getAuthFromSession(): AuthRole {
+  const fromSessionStorage = window.sessionStorage.getItem(AUTH_ITEM_STORAGE);
+  return isRole(fromSessionStorage) ? fromSessionStorage : null;
+}
+
+function setAuthToSession(auth: AuthRole): void {
+  if (auth) {
+    window.sessionStorage.setItem(AUTH_ITEM_STORAGE, auth);
+  } else {
+    window.sessionStorage.removeItem(AUTH_ITEM_STORAGE);
+  }
+}
 
 const initialState: AuthState = {
-  auth: null
+  role: getAuthFromSession()
 }
 
 const slice = createSlice({
   initialState: initialState,
   name: 'authState',
   reducers: {
-    signIn: (state, { payload }: PayloadAction<AuthRoles>) => {
-      state.auth = payload;
+    signIn: (state, { payload }: PayloadAction<AuthRole>) => {
+      state.role = payload;
+      setAuthToSession(payload);
     }, 
     signOut: (state) => {
-      state.auth = null;
+      state.role = null;
+      setAuthToSession(null);
     }
   }
 })

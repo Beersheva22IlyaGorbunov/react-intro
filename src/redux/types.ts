@@ -1,9 +1,13 @@
 export type AuthState = {
-  auth: null | "admin" | "user"
+  role: AuthRole
 }
 
-export type AuthRoles = null | "admin" | "user"
+export type AuthRole = null | (typeof roles)[number]
+
+const roles = ["admin", "user"]
+
+export const isRole = (role: any): boolean => roles.includes(role)
 
 export type RootState = {
-  authSlice: AuthState
+  authState: AuthState
 }
