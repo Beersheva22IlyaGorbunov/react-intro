@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { InputResult } from './types'
-import Alert from './Alert'
+import InputResult from '../../model/ActionResult'
 import "./Input.css"
+import { Alert, Box, TextField } from '@mui/material'
+import { Button } from '@mui/material'
 
 type Props = {
   placeholder: string
@@ -29,9 +30,11 @@ const Input: React.FC<Props> = ({ placeholder, buttonTitle, submitFn, type }) =>
   
   return (
     <div className='input-form'>
-      <input type={type ?? "text"} onKeyDown={e => e.key === "Enter" && handleSubmit()} onChange={handleInputChange} placeholder={placeholder} />
-      <button onClick={handleSubmit} disabled={!inputText}>{buttonTitle ?? "Go"}</button>
-      {inputRes && <Alert status={inputRes.status} message={inputRes.message} />}
+      <Box sx={{display: "flex", flexDirection: "row"}} gap={1}>
+        <TextField size="small" type={type ?? "text"} label={placeholder} variant="outlined" onKeyDown={e => e.key === "Enter" && handleSubmit()} onChange={handleInputChange} />
+        <Button variant="outlined" onClick={handleSubmit} disabled={!inputText}>{buttonTitle ?? "Go"}</Button>
+      </Box>
+      {inputRes && <Alert severity={inputRes.status}>{inputRes.message}</Alert>}
     </div>
   )
 }

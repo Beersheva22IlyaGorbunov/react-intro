@@ -1,5 +1,7 @@
+import UserData from "../model/UserData"
+
 export type AuthState = {
-  role: AuthRole
+  user: UserData
 }
 
 export type AuthRole = null | (typeof roles)[number]

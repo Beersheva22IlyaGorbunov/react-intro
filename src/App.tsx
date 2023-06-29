@@ -1,7 +1,8 @@
 import React, { ReactElement } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Navigator from "./components/navigators/Navigator";
+import NavigatorDispatcher from "./components/navigators/NavigatorDispatcher";
+import UserData from "./model/UserData";
 import { Customers, Home, Orders, Products, ShoppingCart, SignIn, SignOut } from "./pages";
 import { useAuthSelector } from "./redux/store";
 import { AuthRole } from "./redux/types";
@@ -10,7 +11,7 @@ export type MenuPoint = {
   title: string;
   path: string;
   element: ReactElement;
-  forRoles: AuthRole[];
+  forRoles: Array<string | null>;
 }
 
 const menuPoints: MenuPoint[] = [
@@ -39,7 +40,7 @@ const menuPoints: MenuPoint[] = [
     forRoles: ["admin"]
   },
   {
-    title: "ShoppingCart",
+    title: "Shopping Cart",
     element: <ShoppingCart />,
     path: "shoppingcart",
     forRoles: ["user"]
@@ -59,13 +60,13 @@ const menuPoints: MenuPoint[] = [
 ]
 
 const App: React.FC = () => {
-  const auth: AuthRole = useAuthSelector();
-  const currentPoints: MenuPoint[] = menuPoints.filter((point) => point.forRoles.includes(auth))
+  const auth: UserData = useAuthSelector();
+  const currentPoints: MenuPoint[] = menuPoints.filter((point) => point.forRoles.includes(auth ? auth.role : null))
   
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigator menuPoints={currentPoints} />}>
+        <Route path="/" element={<NavigatorDispatcher menuPoints={currentPoints} />}>
           {currentPoints.map((point, index) => 
             <Route key={index} index={point.path === ""} path={point.path}  element={point.element} />)}
           <Route

@@ -5,25 +5,6 @@
   --accent-color: #d2b5e2;
 }
 
-input, button {
-  border: 1px solid var(--secondary-color);
-  background: none;
-  padding: .3rem .6rem;
-  border-radius: .5rem;
-}
-
-h1, p {
-  margin: 0;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover, .navigator-item__link:hover {
-  background-color: var(--third-color);
-}
-
 .application-container {
   height: 100vh;
 }

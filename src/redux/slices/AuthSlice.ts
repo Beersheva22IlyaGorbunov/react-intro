@@ -1,36 +1,31 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthRole, AuthState, isRole } from "../types";
+import UserData from "../../model/UserData";
+import { AuthState } from "../types";
 
 const AUTH_ITEM_STORAGE = "auth";
 
-function getAuthFromSession(): AuthRole {
-  const fromSessionStorage = window.sessionStorage.getItem(AUTH_ITEM_STORAGE);
-  return isRole(fromSessionStorage) ? fromSessionStorage : null;
-}
-
-function setAuthToSession(auth: AuthRole): void {
-  if (auth) {
-    window.sessionStorage.setItem(AUTH_ITEM_STORAGE, auth);
-  } else {
-    window.sessionStorage.removeItem(AUTH_ITEM_STORAGE);
-  }
+function getAuthFromSession(): UserData {
+  const fromlocalStorage = window.localStorage.getItem(AUTH_ITEM_STORAGE);
+  return fromlocalStorage ? JSON.parse(fromlocalStorage) : null;
 }
 
 const initialState: AuthState = {
-  role: getAuthFromSession()
+  user: getAuthFromSession()
 }
 
 const slice = createSlice({
   initialState: initialState,
   name: 'authState',
   reducers: {
-    signIn: (state, { payload }: PayloadAction<AuthRole>) => {
-      state.role = payload;
-      setAuthToSession(payload);
+    signIn: (state, { payload }: PayloadAction<UserData>) => {
+      state.user = payload;
+      if (payload) {
+        window.localStorage.setItem(AUTH_ITEM_STORAGE, JSON.stringify(payload));
+      }
     }, 
     signOut: (state) => {
-      state.role = null;
-      setAuthToSession(null);
+      state.user = null;
+      window.localStorage.removeItem(AUTH_ITEM_STORAGE);
     }
   }
 })

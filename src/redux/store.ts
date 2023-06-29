@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
+import UserData from "../model/UserData";
 import { authReducer } from "./slices/AuthSlice";
-import { AuthRole, RootState } from "./types";
+import { RootState } from "./types";
 
 export const store = configureStore({
   reducer: {
@@ -9,4 +10,4 @@ export const store = configureStore({
   }
 })
 
-export const useAuthSelector = (): AuthRole => useSelector((state: RootState) => state.authState.role)
+export const useAuthSelector = (): UserData => useSelector((state: RootState) => state.authState.user)

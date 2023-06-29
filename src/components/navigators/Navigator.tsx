@@ -1,36 +1,72 @@
-import React, { useEffect } from "react";
-import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { AppBar, Tab, Tabs } from "@mui/material";
+import { Box } from "@mui/system";
+import React, { useEffect, useState } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { MenuPoint } from "../../App";
 
 type Props = {
-  menuPoints: MenuPoint[]
-}
+  menuPoints: MenuPoint[];
+};
 
 const Navigator: React.FC<Props> = ({ menuPoints }) => {
+  const [value, setValue] = useState<number>(0);
   const navigate = useNavigate();
   const location = useLocation();
 
+  //Prevent error on value greater than tabs quantity
+  if (value >= menuPoints.length) {
+    setValue(0);
+  }
+
   useEffect(() => {
-    let index = menuPoints.findIndex((point) => "/" +  point.path === location.pathname)
+    let index = menuPoints.findIndex(
+      (point) => "/" + point.path === location.pathname
+    );
     if (index === -1) {
-      index = 0
+      index = 0;
     }
-    navigate("/" + menuPoints[index].path)
-  }, [menuPoints])
-  
+    navigate("/" + menuPoints[index].path);
+    setValue(index);
+  }, [menuPoints]);
+
+  useEffect(() => {
+    let index = menuPoints.findIndex(
+      (point) => "/" + point.path === location.pathname
+    );
+    if (index === -1) {
+      index = 0;
+    }
+    setValue(index);
+  }, [location.pathname]);
+
+  function handleTabChange(
+    e: React.SyntheticEvent<Element, Event> | null,
+    newValue: string | number | null
+  ): void {
+    if (typeof newValue === "number") {
+      setValue(newValue);
+    }
+  }
+
+  function getTabs(): JSX.Element[] {
+    return menuPoints.map((elem) => (
+      <Tab key={elem.title} label={elem.title} component={Link} to={elem.path} />
+    ))
+  }
+
   return (
-    <div className="application-container">
-      <nav>
-        <ul className="navigator-list">
-          {menuPoints.map((elem, index) => <li key={index} className="navigator-item">
-            <NavLink className="navigator-item__link" to={elem.path}>{elem.title}</NavLink>
-          </li>)}
-        </ul>
-      </nav>
-      <div className="content-container">
-        <Outlet></Outlet>
-      </div>
-    </div>
+    <Box marginTop={6}>
+      <AppBar sx={{backgroundColor: "lightgray"}}>
+        <Tabs
+          value={value}
+          onChange={handleTabChange}
+          aria-label="basic tabs example"
+        >
+          {getTabs()}
+        </Tabs>
+      </AppBar>
+      <Outlet></Outlet>
+    </Box>
   );
 };
 
