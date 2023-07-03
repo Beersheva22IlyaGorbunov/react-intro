@@ -8,7 +8,7 @@ import LoginData from '../model/LoginData'
 import UserData from '../model/UserData'
 import { signIn } from '../redux/slices/AuthSlice'
 
-export const SignIn: React.FC = () => {
+const SignIn: React.FC = () => {
   const dispatch = useDispatch();
 
   async function loginFn(loginData: LoginData): Promise<ActionResult> {
@@ -34,3 +34,5 @@ export const SignIn: React.FC = () => {
     </Box>
   )
 }
+
+export default SignIn

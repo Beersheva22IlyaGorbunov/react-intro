@@ -2,6 +2,8 @@ import LoginData from "../model/LoginData";
 import UserData from "../model/UserData";
 import AuthService from "./AuthService";
 
+export const AUTH_DATA_JWT = 'auth-data-jwt';
+
 export default class AuthServiceJWT implements AuthService {
   constructor(private url: string) {}
 
@@ -14,9 +16,12 @@ export default class AuthServiceJWT implements AuthService {
       method: "POST",
       body: JSON.stringify(loginData),
     });
+    console.log(response)
     if (response.ok) {
       const body = await response.json();
-      const userInfoStr = atob(body.accessToken.split(".")[1]);
+      const jwt_token = body.accessToken;
+      window.localStorage.setItem(AUTH_DATA_JWT, jwt_token);
+      const userInfoStr = atob(jwt_token.split(".")[1]);
       const userInfo = JSON.parse(userInfoStr);
       result = {
         email: userInfo.email,
@@ -29,6 +34,6 @@ export default class AuthServiceJWT implements AuthService {
   }
 
   async logout(): Promise<void> {
-    return new Promise(res => res())
+    window.localStorage.removeItem(AUTH_DATA_JWT);
   }
 }

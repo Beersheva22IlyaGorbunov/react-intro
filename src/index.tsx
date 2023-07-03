@@ -5,15 +5,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './redux/store'
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </LocalizationProvider>
   </Provider>
 );
 

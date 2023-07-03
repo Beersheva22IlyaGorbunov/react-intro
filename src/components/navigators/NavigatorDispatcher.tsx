@@ -10,7 +10,7 @@ type Props = {
 
 const NavigatorDispatcher: React.FC<Props> = ({ menuPoints }) => {
   const theme = useTheme();
-  const isPortrait = useMediaQuery(theme.breakpoints.down('sm'))
+  const isPortrait = useMediaQuery(theme.breakpoints.down('md'))
   return !isPortrait ? <Navigator menuPoints={menuPoints} /> : <NavigatorPortrait menuPoints={menuPoints} />;
 }
 

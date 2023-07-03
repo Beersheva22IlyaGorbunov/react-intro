@@ -1,0 +1,12 @@
+{
+  "minSalary": 5000,
+  "maxSalary": 50000,
+  "salaryStep": 500,
+  "minYear": 1950,
+  "maxYear": 2005,
+  "departments": [
+    "QA", "Development", "Audit", "Accounting", "Management"
+  ],
+  "generateMin": 1,
+  "generateMax": 50
+}

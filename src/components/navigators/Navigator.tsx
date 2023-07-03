@@ -13,11 +13,6 @@ const Navigator: React.FC<Props> = ({ menuPoints }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  //Prevent error on value greater than tabs quantity
-  if (value >= menuPoints.length) {
-    setValue(0);
-  }
-
   useEffect(() => {
     let index = menuPoints.findIndex(
       (point) => "/" + point.path === location.pathname
@@ -55,17 +50,19 @@ const Navigator: React.FC<Props> = ({ menuPoints }) => {
   }
 
   return (
-    <Box marginTop={6}>
+    <Box mt={6}>
       <AppBar sx={{backgroundColor: "lightgray"}}>
         <Tabs
-          value={value}
+          value={value < menuPoints.length ? value : 0}
           onChange={handleTabChange}
           aria-label="basic tabs example"
         >
           {getTabs()}
         </Tabs>
       </AppBar>
-      <Outlet></Outlet>
+      <Box sx={{p: 2}}>
+        <Outlet></Outlet>
+      </Box>
     </Box>
   );
 };

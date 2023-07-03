@@ -55,7 +55,7 @@ const NavigatorPortrait: React.FC<Props> = ({ menuPoints }) => {
   }
 
   return (
-    <Box marginTop={6}>
+    <Box mt={4}>
       <AppBar
         color="inherit"
         sx={{
@@ -92,7 +92,7 @@ const NavigatorPortrait: React.FC<Props> = ({ menuPoints }) => {
         </IconButton>
         <Divider />
         <Tabs
-          value={value}
+          value={value < menuPoints.length ? value : 0}
           orientation="vertical"
           onChange={(e, index) => handleMenuClick(index)}
           aria-label="basic tabs example"

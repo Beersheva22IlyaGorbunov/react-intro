@@ -20,7 +20,7 @@ const style = {
   p: 4,
 };
 
-export const SignOut: React.FC = () => {
+const SignOut: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -45,3 +45,5 @@ export const SignOut: React.FC = () => {
       </Box>
     </Modal>
 };
+
+export default SignOut
