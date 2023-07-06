@@ -50,12 +50,17 @@ const NavigatorPortrait: React.FC<Props> = ({ menuPoints }) => {
 
   function getTabs(): JSX.Element[] {
     return menuPoints.map((elem) => (
-      <Tab key={elem.title} label={elem.title} component={Link} to={elem.path} />
-    ))
+      <Tab
+        key={elem.title}
+        label={elem.title}
+        component={Link}
+        to={elem.path}
+      />
+    ));
   }
 
   return (
-    <Box mt={4}>
+    <>
       <AppBar
         color="inherit"
         sx={{
@@ -64,7 +69,7 @@ const NavigatorPortrait: React.FC<Props> = ({ menuPoints }) => {
           flexDirection: "row",
           alignItems: "center",
           pl: 2,
-          pr: 2
+          pr: 2,
         }}
       >
         <IconButton
@@ -74,7 +79,9 @@ const NavigatorPortrait: React.FC<Props> = ({ menuPoints }) => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography sx={{ml: "auto", mr: "auto", pr: 3}} variant="h6">{menuPoints[value]?.title ?? ""}</Typography>
+        <Typography sx={{ ml: "auto", mr: "auto", pr: 3 }} variant="h6">
+          {menuPoints[value]?.title ?? ""}
+        </Typography>
       </AppBar>
       <Drawer
         sx={{
@@ -100,10 +107,7 @@ const NavigatorPortrait: React.FC<Props> = ({ menuPoints }) => {
           {getTabs()}
         </Tabs>
       </Drawer>
-      <Box sx={{p: 2}}>
-        <Outlet></Outlet>
-      </Box>
-    </Box>
+    </>
   );
 };
 

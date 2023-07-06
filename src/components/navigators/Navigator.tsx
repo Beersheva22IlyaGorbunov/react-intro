@@ -50,20 +50,15 @@ const Navigator: React.FC<Props> = ({ menuPoints }) => {
   }
 
   return (
-    <Box mt={6}>
-      <AppBar sx={{backgroundColor: "lightgray"}}>
-        <Tabs
-          value={value < menuPoints.length ? value : 0}
-          onChange={handleTabChange}
-          aria-label="basic tabs example"
-        >
-          {getTabs()}
-        </Tabs>
-      </AppBar>
-      <Box sx={{p: 2}}>
-        <Outlet></Outlet>
-      </Box>
-    </Box>
+    <AppBar sx={{backgroundColor: "lightgray"}}>
+      <Tabs
+        value={value < menuPoints.length ? value : 0}
+        onChange={handleTabChange}
+        aria-label="basic tabs example"
+      >
+        {getTabs()}
+      </Tabs>
+    </AppBar>
   );
 };
 

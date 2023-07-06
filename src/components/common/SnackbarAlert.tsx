@@ -4,10 +4,11 @@ import ReactDOM from 'react-dom';
 import ActionResult from '../../model/ActionResult';
 
 type Props = {
-  message: ActionResult
+  message: ActionResult;
+  onClose?: () => void
 }
 
-const SnackbarAlert: React.FC<Props> = ({ message }) => {
+const SnackbarAlert: React.FC<Props> = ({ message, onClose }) => {
   const [snackbarMsg, setSnackbarMsg] = useState<ActionResult | undefined>(message);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ const SnackbarAlert: React.FC<Props> = ({ message }) => {
       return;
     }
     setSnackbarMsg(undefined);
+    onClose && onClose();
   };
 
   return (

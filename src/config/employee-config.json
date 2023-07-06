@@ -8,5 +8,15 @@
     "QA", "Development", "Audit", "Accounting", "Management"
   ],
   "generateMin": 1,
-  "generateMax": 50
+  "generateMax": 50,
+  "statistics": {
+    "age": {
+      "stepArr": [3, 5, 10],
+      "defaultStep": 3
+    },
+    "salary": {
+      "stepArr": [5000, 8000, 10000, 15000],
+      "defaultStep": 5000
+    }
+  }
 }

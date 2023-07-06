@@ -1,21 +1,9 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Paper,
-  Snackbar,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import employeesConfig from "../config/employee-config.json";
 import React from "react";
 import { getRandomEmployee } from "../utils/random";
-import { authService, employeesService } from "../config/service-config";
-import ActionResult from "../model/ActionResult";
-import { signOut } from "../redux/slices/AuthSlice";
+import { employeesService } from "../config/service-config";
 import { useDispatch } from "react-redux";
-import Input from "../components/common/Input";
-import SnackbarAlert from "../components/common/SnackbarAlert";
 import CodeType from "../model/CodeType";
 import { codeActions } from "../redux/slices/CodeSlice";
 
@@ -33,7 +21,6 @@ const {
 const EmployeeGenerator = () => {
   const [quantity, setQuantity] = React.useState<number>(0);
   const [quantityError, setQuantityError] = React.useState<boolean>(false);
-  const [actionResult, setActionResult] = React.useState<ActionResult | undefined>(undefined)
   const dispatch = useDispatch();
 
   function handleQuantityChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -47,6 +34,10 @@ const EmployeeGenerator = () => {
   }
 
   async function handleSubmit() {
+    const codeMessage = {
+      code: CodeType.UNKNOWN,
+      message: "",
+    };
     try {
       const employees = Array.from({ length: quantity }).map(() =>
         getRandomEmployee({
@@ -62,22 +53,25 @@ const EmployeeGenerator = () => {
         employeesService.addEmployee(employee)
       );
       const responses = await Promise.all(promises);
-      const message = `${responses.length} employees were added succesfully`;
-      dispatch(codeActions.set({codeMsg: {code: CodeType.OK, message}}))
+      codeMessage.code = CodeType.OK;
+      codeMessage.message = `${responses.length} employees were added succesfully`;
       setQuantity(0);
     } catch (e: any) {
       if (e === "Authentication") {
-        dispatch(codeActions.set({codeMsg: {code: CodeType.AUTH_ERROR, message: "Can't recognize you, you need to login"}}))
+        codeMessage.code = CodeType.AUTH_ERROR;
+        codeMessage.message = "Can't recognize you, you need to login";
       } else {
-        dispatch(codeActions.set({codeMsg: {code: CodeType.SERVER_ERROR, message: e.message}}))
+        codeMessage.code = CodeType.SERVER_ERROR;
+        codeMessage.message = e.message;
       }
     }
+    dispatch(codeActions.set({ codeMsg: codeMessage }));
   }
 
   return (
-    <Box sx={{display: "flex", justifyContent:"center"}}>
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Paper
-        sx={{ padding: 2, display: "flex", flexDirection: "column", gap: 2 }}
+        sx={{ padding: 3, display: "flex", flexDirection: "column", gap: 2 }}
       >
         <Typography variant="h5">Generate employees</Typography>
         <TextField
@@ -99,7 +93,6 @@ const EmployeeGenerator = () => {
           Generate
         </Button>
       </Paper>
-      { actionResult && <SnackbarAlert message={actionResult} />}
     </Box>
   );
 };

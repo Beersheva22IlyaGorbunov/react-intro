@@ -1,3 +1,4 @@
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import React, { ReactElement, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -16,6 +17,7 @@ import SalaryStatistics from "./pages/SalaryStatistics";
 import SignIn from "./pages/SignIn";
 import SignOut from "./pages/SignOut";
 import { signOut } from "./redux/slices/AuthSlice";
+import { codeActions } from "./redux/slices/CodeSlice";
 import { useAuthSelector, useCodeSelector } from "./redux/store";
 import { CodeState } from "./redux/types";
 
@@ -87,9 +89,13 @@ const App: React.FC = () => {
         dispatch(signOut());
         authService.logout();
         break;
-      };
+      }
     }
     return res;
+  }
+
+  function handleSnackbarClose() {
+    dispatch(codeActions.reset());
   }
 
   const [alertMessage, severity] = useMemo(() => codeProcessing(code), [code]);
@@ -97,8 +103,17 @@ const App: React.FC = () => {
     point.forRoles.includes(auth ? auth.role : null)
   );
 
+  const theme = createTheme({
+    palette: {
+      background: {
+        default: "#F5F5F5",
+      }
+    }
+  });
+
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline/>
       <BrowserRouter>
         <Routes>
           <Route
@@ -124,11 +139,16 @@ const App: React.FC = () => {
           </Route>
         </Routes>
       </BrowserRouter>
-      { alertMessage && <SnackbarAlert message={{
-        status: severity,
-        message: alertMessage
-      }} /> }
-    </>
+      {alertMessage && (
+        <SnackbarAlert
+          message={{
+            status: severity,
+            message: alertMessage,
+          }}
+          onClose={handleSnackbarClose}
+        />
+      )}
+    </ThemeProvider>
   );
 };
 

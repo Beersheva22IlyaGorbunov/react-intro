@@ -1,8 +1,9 @@
-import { useMediaQuery, useTheme } from '@mui/material'
-import React from 'react'
-import { MenuPoint } from '../../App';
-import Navigator from './Navigator';
-import NavigatorPortrait from './NavigatorPortrait';
+import { Box, Paper, useMediaQuery, useTheme } from "@mui/material";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import { MenuPoint } from "../../App";
+import Navigator from "./Navigator";
+import NavigatorPortrait from "./NavigatorPortrait";
 
 type Props = {
   menuPoints: MenuPoint[];
@@ -10,8 +11,19 @@ type Props = {
 
 const NavigatorDispatcher: React.FC<Props> = ({ menuPoints }) => {
   const theme = useTheme();
-  const isPortrait = useMediaQuery(theme.breakpoints.down('md'))
-  return !isPortrait ? <Navigator menuPoints={menuPoints} /> : <NavigatorPortrait menuPoints={menuPoints} />;
-}
+  const isPortrait = useMediaQuery(theme.breakpoints.down("md"));
+  return (
+    <Box mt={isPortrait ? 4 : 6}>
+      {!isPortrait ? (
+        <Navigator menuPoints={menuPoints} />
+      ) : (
+        <NavigatorPortrait menuPoints={menuPoints} />
+      )}
+      <Box sx={{ p: 2 }}>
+        <Outlet></Outlet>
+      </Box>
+    </Box>
+  );
+};
 
-export default NavigatorDispatcher
+export default NavigatorDispatcher;
