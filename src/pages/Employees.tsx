@@ -1,88 +1,28 @@
-import React, { ReactNode, useMemo, useState } from "react";
+import React, { useState } from "react";
 import { employeesService } from "../config/service-config";
-import {
-  DataGrid,
-  GridActionsCellItem,
-  GridColDef,
-  GridRenderCellParams,
-  GridRowParams,
-} from "@mui/x-data-grid";
-import { Box, Paper, Typography } from "@mui/material";
-import WomanIcon from "@mui/icons-material/Woman";
-import ManIcon from "@mui/icons-material/Man";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Box, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import useEmployees from "../hooks/useEmployees";
 import { useAuthSelector } from "../redux/store";
 import { useDispatch } from "react-redux";
 import { codeActions } from "../redux/slices/CodeSlice";
 import CodeType from "../model/CodeType";
 import Confirmation from "../components/common/Confirmation";
-import EditIcon from "@mui/icons-material/Edit";
 import Employee from "../model/Employee";
 import ActionResult from "../model/ActionResult";
 import UpdateEmployeeModal from "../components/UpdateEmployeeModal";
+import EmployeesTable from "../components/EmployeesTable";
+import EmployeesList from "../components/EmployeesList";
 
 const Employees: React.FC = () => {
   const employees = useEmployees();
   const userData = useAuthSelector();
   const dispatch = useDispatch();
-  const [employeeToUpdate, setEmployeeToUpdate] = useState<
-    Employee | null
-  >(null);
-  const [removeEmplId, setRemoveEmplId] = useState<number | null>(null);
-
-  const userColumns: GridColDef[] = [
-    { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "name", headerName: "Name", flex: 2 },
-    {
-      field: "salary",
-      headerName: "Salary",
-      align: "left",
-      headerAlign: "left",
-      type: "number",
-      flex: 1,
-    },
-    { field: "birthDate", headerName: "Birth date", type: "date", flex: 2 },
-    { field: "department", headerName: "Department", flex: 2 },
-    {
-      field: "gender",
-      headerName: "Gender",
-      flex: 0.8,
-      renderCell: (params: GridRenderCellParams<String>) =>
-        params.value === "male" ? <ManIcon /> : <WomanIcon />,
-    },
-  ];
-
-  const adminColumns: GridColDef[] = [
-    {
-      field: "actions",
-      type: "actions",
-      flex: 0.5,
-      getActions: (params: GridRowParams) => [
-        <GridActionsCellItem
-          icon={<DeleteIcon />}
-          onClick={() => setRemoveEmplId(+params.id)}
-          label="Delete"
-          showInMenu
-        />,
-        <GridActionsCellItem
-          icon={<EditIcon />}
-          onClick={() => setEmployeeToUpdate(params.row)}
-          label="Edit"
-          showInMenu
-        />,
-      ],
-    },
-  ];
-
-  const columns = useMemo(
-    () => getColumns(userData?.role ?? "user"),
-    [userData]
+  const theme = useTheme();
+  const isPortrait = useMediaQuery(theme.breakpoints.down("sm"));
+  const [employeeToUpdate, setEmployeeToUpdate] = useState<Employee | null>(
+    null
   );
-
-  function getColumns(role: string): GridColDef[] {
-    return role === "admin" ? adminColumns.concat(userColumns) : userColumns;
-  }
+  const [removeEmplId, setRemoveEmplId] = useState<number | null>(null);
 
   async function deleteEmployee(id: any) {
     const codeMessage = {
@@ -118,7 +58,9 @@ const Employees: React.FC = () => {
       message: "",
     };
     try {
-      const updatedEmployee = await employeesService.updateEmployee(employeeToUpdate);
+      const updatedEmployee = await employeesService.updateEmployee(
+        employeeToUpdate
+      );
       result.status = "success";
       result.message = `Employee with id: ${updatedEmployee.id} was updated`;
       codeMessage.code = CodeType.OK;
@@ -146,11 +88,21 @@ const Employees: React.FC = () => {
           Employees
         </Typography>
         <Box sx={{ height: "70vh" }}>
-          <DataGrid
-            loading={employees.length === 0}
-            columns={columns}
-            rows={employees}
-          />
+          {isPortrait ? (
+            <EmployeesList
+              employees={employees}
+              role={userData?.role}
+              onRemoveEmplClick={setRemoveEmplId}
+              onUpdateEmplClick={setEmployeeToUpdate}
+            />
+          ) : (
+            <EmployeesTable
+              employees={employees}
+              role={userData?.role}
+              onRemoveEmplClick={setRemoveEmplId}
+              onUpdateEmplClick={setEmployeeToUpdate}
+            />
+          )}
         </Box>
       </Paper>
       {employeeToUpdate && (
@@ -160,15 +112,17 @@ const Employees: React.FC = () => {
           employee={employeeToUpdate}
         />
       )}
-      {removeEmplId && <Confirmation
-        title={"Delete employee?"}
-        body={`You are going to delete employee with id: ${removeEmplId}. Are you sure?`}
-        onSubmit={() => {
-          deleteEmployee(removeEmplId);
-          setRemoveEmplId(null);
-        }}
-        onCancel={() => setRemoveEmplId(null)}
-      />}
+      {removeEmplId && (
+        <Confirmation
+          title={"Delete employee?"}
+          body={`You are going to delete employee with id: ${removeEmplId}. Are you sure?`}
+          onSubmit={() => {
+            deleteEmployee(removeEmplId);
+            setRemoveEmplId(null);
+          }}
+          onCancel={() => setRemoveEmplId(null)}
+        />
+      )}
     </>
   );
 };
