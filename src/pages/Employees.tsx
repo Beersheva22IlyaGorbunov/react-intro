@@ -33,7 +33,7 @@ const Employees: React.FC = () => {
       await employeesService.deleteEmployee(id);
       codeMessage.code = CodeType.OK;
       codeMessage.message = `Employee with id ${id} was deleted`;
-    } catch (errMsg) {
+    } catch (errMsg: any) {
       console.log(errMsg);
       if (errMsg === "Authentication") {
         codeMessage.code = CodeType.AUTH_ERROR;
@@ -41,6 +41,9 @@ const Employees: React.FC = () => {
       } else if (errMsg === "Not found") {
         codeMessage.code = CodeType.NOT_FOUND;
         codeMessage.message = `Employee with id ${id} doesn't exist`;
+      } else {
+        codeMessage.code = CodeType.SERVER_ERROR;
+        codeMessage.message = errMsg.message;
       }
     }
     dispatch(codeActions.set({ codeMsg: codeMessage }));
