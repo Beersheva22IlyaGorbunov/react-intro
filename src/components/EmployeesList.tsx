@@ -19,7 +19,7 @@ const EmployeesList: React.FC<Props> = ({
   return (
     <List sx={{height: "100%", overflowY: "scroll"}}>
       {employees.map((employee) => (
-        <ListItem>
+        <ListItem key={employee.id}>
           <EmployeeCard
             employee={employee}
             role={role}

@@ -1,4 +1,10 @@
-import { DataGrid, GridActionsCellItem, GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowParams,
+} from "@mui/x-data-grid";
 import React, { useMemo } from "react";
 import WomanIcon from "@mui/icons-material/Woman";
 import ManIcon from "@mui/icons-material/Man";
@@ -11,9 +17,14 @@ type Props = {
   role: string | undefined;
   onRemoveEmplClick: (id: number) => void;
   onUpdateEmplClick: (employee: Employee) => void;
-}
+};
 
-const EmployeesTable: React.FC<Props> = ({ employees, role, onRemoveEmplClick, onUpdateEmplClick }) => {
+const EmployeesTable: React.FC<Props> = ({
+  employees,
+  role,
+  onRemoveEmplClick,
+  onUpdateEmplClick,
+}) => {
   const userColumns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 0.3 },
     { field: "name", headerName: "Name", flex: 1.6 },
@@ -58,10 +69,7 @@ const EmployeesTable: React.FC<Props> = ({ employees, role, onRemoveEmplClick, o
     },
   ];
 
-  const columns = useMemo(
-    () => getColumns(role ?? "user"),
-    [role]
-  );
+  const columns = useMemo(() => getColumns(role ?? "user"), [role]);
 
   function getColumns(role: string): GridColDef[] {
     return role === "admin" ? adminColumns.concat(userColumns) : userColumns;
