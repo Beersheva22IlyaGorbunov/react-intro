@@ -6,6 +6,7 @@ import { employeesService } from "../config/service-config";
 import { useDispatch } from "react-redux";
 import CodeType from "../model/CodeType";
 import { codeActions } from "../redux/slices/CodeSlice";
+import useCodeTypeDispatch from "../hooks/useCodeTypeDispatch";
 
 const {
   generateMin,
@@ -21,7 +22,7 @@ const {
 const EmployeeGenerator = () => {
   const [quantity, setQuantity] = React.useState<number>(0);
   const [quantityError, setQuantityError] = React.useState<boolean>(false);
-  const dispatch = useDispatch();
+  const dispatchCode = useCodeTypeDispatch();
 
   function handleQuantityChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = +e.target.value;
@@ -38,6 +39,8 @@ const EmployeeGenerator = () => {
       code: CodeType.UNKNOWN,
       message: "",
     };
+    let successMessage = "";
+    let error = "";
     try {
       const employees = Array.from({ length: quantity }).map(() =>
         getRandomEmployee({
@@ -53,19 +56,13 @@ const EmployeeGenerator = () => {
         employeesService.addEmployee(employee)
       );
       const responses = await Promise.all(promises);
-      codeMessage.code = CodeType.OK;
-      codeMessage.message = `${responses.length} employees were added succesfully`;
+      successMessage = `${responses.length} employees were added succesfully`;
       setQuantity(0);
     } catch (e: any) {
-      if (e === "Authentication") {
-        codeMessage.code = CodeType.AUTH_ERROR;
-        codeMessage.message = "Can't recognize you, you need to login";
-      } else {
-        codeMessage.code = CodeType.SERVER_ERROR;
-        codeMessage.message = e.message;
-      }
+      error = e;
     }
-    dispatch(codeActions.set({ codeMsg: codeMessage }));
+    console.log(error)
+    dispatchCode(successMessage, error);
   }
 
   return (

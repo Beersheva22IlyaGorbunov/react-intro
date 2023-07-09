@@ -12,11 +12,12 @@ import ActionResult from "../model/ActionResult";
 import UpdateEmployeeModal from "../components/UpdateEmployeeModal";
 import EmployeesTable from "../components/EmployeesTable";
 import EmployeesList from "../components/EmployeesList";
+import useCodeTypeDispatch from "../hooks/useCodeTypeDispatch";
 
 const Employees: React.FC = () => {
   const employees = useEmployees();
   const userData = useAuthSelector();
-  const dispatch = useDispatch();
+  const dispatchCode = useCodeTypeDispatch();
   const theme = useTheme();
   const isPortrait = useMediaQuery(theme.breakpoints.down("sm"));
   const [employeeToUpdate, setEmployeeToUpdate] = useState<Employee | null>(
@@ -25,28 +26,14 @@ const Employees: React.FC = () => {
   const [removeEmplId, setRemoveEmplId] = useState<number | null>(null);
 
   async function deleteEmployee(id: any) {
-    const codeMessage = {
-      code: CodeType.UNKNOWN,
-      message: "",
-    };
+    let successMessage = `Employee with id: ${id} was deleted`;
+    let error = ''
     try {
       await employeesService.deleteEmployee(id);
-      codeMessage.code = CodeType.OK;
-      codeMessage.message = `Employee with id ${id} was deleted`;
-    } catch (errMsg: any) {
-      console.log(errMsg);
-      if (errMsg === "Authentication") {
-        codeMessage.code = CodeType.AUTH_ERROR;
-        codeMessage.message = "Can't recognize you, you need to login";
-      } else if (errMsg === "Not found") {
-        codeMessage.code = CodeType.NOT_FOUND;
-        codeMessage.message = `Employee with id ${id} doesn't exist`;
-      } else {
-        codeMessage.code = CodeType.SERVER_ERROR;
-        codeMessage.message = errMsg.message;
-      }
+    } catch (e: any) {
+      error = e
     }
-    dispatch(codeActions.set({ codeMsg: codeMessage }));
+    dispatchCode(successMessage, error);
   }
 
   async function handleUpdateEmployee(
@@ -56,31 +43,18 @@ const Employees: React.FC = () => {
       status: "error",
       message: "",
     };
-    const codeMessage = {
-      code: CodeType.UNKNOWN,
-      message: "",
-    };
+    let successMessage = `Employee with id: ${employeeToUpdate.id} was updated`;
+    let error = ''
     try {
       const updatedEmployee = await employeesService.updateEmployee(
         employeeToUpdate
       );
       result.status = "success";
       result.message = `Employee with id: ${updatedEmployee.id} was updated`;
-      codeMessage.code = CodeType.OK;
-      codeMessage.message = `Employee with id: ${updatedEmployee.id} was updated`;
     } catch (e: any) {
-      if (e === "Authentication") {
-        codeMessage.code = CodeType.AUTH_ERROR;
-        codeMessage.message = "Can't recognize you, you need to login";
-      } else if (e === "Not found") {
-        codeMessage.code = CodeType.NOT_FOUND;
-        codeMessage.message = `Can't find employee with id: ${employeeToUpdate.id} `;
-      } else {
-        codeMessage.code = CodeType.SERVER_ERROR;
-        codeMessage.message = e.message;
-      }
+      error = e
     }
-    dispatch(codeActions.set({ codeMsg: codeMessage }));
+    dispatchCode(successMessage, error);
     return result;
   }
 
@@ -90,7 +64,7 @@ const Employees: React.FC = () => {
         <Typography variant="h5" mb={2}>
           Employees
         </Typography>
-        <Box sx={{ height: "70vh" }}>
+        <Box sx={{ height: "73vh" }}>
           {isPortrait ? (
             <EmployeesList
               employees={employees}

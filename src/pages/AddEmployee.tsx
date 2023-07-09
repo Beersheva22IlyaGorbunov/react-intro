@@ -6,9 +6,11 @@ import ActionResult from "../model/ActionResult";
 import CodeType from "../model/CodeType";
 import Employee from "../model/Employee";
 import { codeActions } from "../redux/slices/CodeSlice";
+import useCodeTypeDispatch from "../hooks/useCodeTypeDispatch";
 
 const AddEmployee = () => {
   const dispatch = useDispatch();
+  const dispatchCode = useCodeTypeDispatch();
 
   const handleAddEmployee = async (
     employee: Employee
@@ -17,35 +19,24 @@ const AddEmployee = () => {
       status: "error",
       message: "",
     };
-    const codeMessage = {
-      code: CodeType.UNKNOWN,
-      message: "",
-    };
+    let error = "";
     try {
       const addedEmployee = await employeesService.addEmployee(employee);
       result.status = "success";
       result.message = `Employee with id: ${addedEmployee.id} was added`;
-      codeMessage.code = CodeType.OK;
-      codeMessage.message = `Employee with id: ${addedEmployee.id} was added`;
     } catch (e: any) {
-      if (e === "Authentication") {
-        codeMessage.code = CodeType.AUTH_ERROR;
-        codeMessage.message = "Can't recognize you, you need to login";
-      } else {
-        codeMessage.code = CodeType.SERVER_ERROR;
-        codeMessage.message = e.message;
-      }
+      error = e;
     }
-    dispatch(codeActions.set({ codeMsg: codeMessage }));
+    dispatchCode(result.message, error);
     return result;
   };
 
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-      <Paper
-        sx={{ p: { xs: 2, md: 3 } }}
-      >
-        <Typography variant="h5" mb={2}>Add employee</Typography>
+      <Paper sx={{ p: { xs: 2, md: 3 } }}>
+        <Typography variant="h5" mb={2}>
+          Add employee
+        </Typography>
         <EmployeeForm onSubmit={handleAddEmployee} />
       </Paper>
     </Container>
