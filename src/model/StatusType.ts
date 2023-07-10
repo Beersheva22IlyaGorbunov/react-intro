@@ -1,3 +1,3 @@
-type StatusType = "error" | "success" | "warning";
+type StatusType = 'error' | 'success' | 'warning'
 
 export default StatusType

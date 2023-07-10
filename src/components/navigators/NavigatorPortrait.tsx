@@ -1,54 +1,53 @@
 import {
   AppBar,
-  Box,
   Divider,
   Drawer,
   IconButton,
   Tab,
   Tabs,
-  Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { MenuPoint } from "../../App";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+  Typography
+} from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { MenuPoint } from '../../App'
+import MenuIcon from '@mui/icons-material/Menu'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 
-type Props = {
-  menuPoints: MenuPoint[];
-};
+interface Props {
+  menuPoints: MenuPoint[]
+}
 
 const NavigatorPortrait: React.FC<Props> = ({ menuPoints }) => {
-  const [value, setValue] = useState<number>(0);
-  const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [value, setValue] = useState<number>(0)
+  const [open, setOpen] = React.useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   useEffect(() => {
     let index = menuPoints.findIndex(
-      (point) => "/" + point.path === location.pathname
-    );
+      (point) => '/' + point.path === location.pathname
+    )
     if (index === -1) {
-      index = 0;
+      index = 0
     }
-    navigate("/" + menuPoints[index].path);
-    setValue(index);
-  }, [menuPoints]);
+    navigate('/' + menuPoints[index].path)
+    setValue(index)
+  }, [menuPoints])
 
-  function handleMenuClick(index: number): void {
-    handleDrawerClose();
-    setValue(index);
+  function handleMenuClick (index: number): void {
+    handleDrawerClose()
+    setValue(index)
   }
 
-  function getTabs(): JSX.Element[] {
+  function getTabs (): JSX.Element[] {
     return menuPoints.map((elem) => (
       <Tab
         key={elem.title}
@@ -56,43 +55,43 @@ const NavigatorPortrait: React.FC<Props> = ({ menuPoints }) => {
         component={Link}
         to={elem.path}
       />
-    ));
+    ))
   }
 
   return (
     <>
       <AppBar
-        color="inherit"
+        color='inherit'
         sx={{
-          backgroundColor: "lightgray",
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
+          backgroundColor: 'lightgray',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
           pl: 2,
-          pr: 2,
+          pr: 2
         }}
       >
         <IconButton
-          aria-label="open drawer"
+          aria-label='open drawer'
           onClick={handleDrawerOpen}
-          edge="start"
+          edge='start'
         >
           <MenuIcon />
         </IconButton>
-        <Typography sx={{ ml: "auto", mr: "auto", pr: 3 }} variant="h6">
-          {menuPoints[value]?.title ?? ""}
+        <Typography sx={{ ml: 'auto', mr: 'auto', pr: 3 }} variant='h6'>
+          {menuPoints[value]?.title ?? ''}
         </Typography>
       </AppBar>
       <Drawer
         sx={{
-          flexShrink: 0,
+          flexShrink: 0
         }}
-        variant="persistent"
-        anchor="left"
+        variant='persistent'
+        anchor='left'
         open={open}
       >
         <IconButton
-          sx={{ ml: "auto", width: "40px" }}
+          sx={{ ml: 'auto', width: '40px' }}
           onClick={handleDrawerClose}
         >
           <ChevronLeftIcon />
@@ -100,15 +99,15 @@ const NavigatorPortrait: React.FC<Props> = ({ menuPoints }) => {
         <Divider />
         <Tabs
           value={value < menuPoints.length ? value : 0}
-          orientation="vertical"
+          orientation='vertical'
           onChange={(e, index) => handleMenuClick(index)}
-          aria-label="basic tabs example"
+          aria-label='basic tabs example'
         >
           {getTabs()}
         </Tabs>
       </Drawer>
     </>
-  );
-};
+  )
+}
 
-export default NavigatorPortrait;
+export default NavigatorPortrait

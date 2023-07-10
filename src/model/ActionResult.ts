@@ -1,6 +1,6 @@
-import StatusType from "./StatusType"
+import StatusType from './StatusType'
 
-type ActionResult = {
+interface ActionResult {
   status: StatusType
   message: string
 }

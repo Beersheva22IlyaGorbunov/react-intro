@@ -1,38 +1,39 @@
-import { useDispatch } from "react-redux";
-import CodeType from "../model/CodeType";
-import { codeActions } from "../redux/slices/CodeSlice";
+import { useDispatch } from 'react-redux'
+import CodeType from '../model/CodeType'
+import { codeActions } from '../redux/slices/CodeSlice'
 
 const useCodeTypeDispatch = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  function processResponse(successMsg: string, error: string) {
+  function processResponse (successMsg: string, error: string) {
     let code: CodeType = CodeType.OK
     let message: string = ''
-    
-    if (error.includes("Authentication")) {
-      code = CodeType.AUTH_ERROR;
-      message = "Can't recognize you, you need to login";
-    } else if (error.includes("Not found")) {
-      code = CodeType.NOT_FOUND;
-      message = `Can't find employee`;
-    } else if (error.includes("unavailable")) {
-      code = CodeType.SERVER_ERROR;
-      message = error;
+
+    console.log(typeof error, error)
+
+    if (error.includes('Authentication')) {
+      code = CodeType.AUTH_ERROR
+      message = "Can't recognize you, you need to login"
+    } else if (error.includes('Not found')) {
+      code = CodeType.NOT_FOUND
+      message = 'Can\'t find employee'
+    } else if (error.includes('unavailable')) {
+      code = CodeType.SERVER_ERROR
+      message = error
     } else if (error.length > 0) {
-      code = CodeType.UNKNOWN;
-      message = error;
+      code = CodeType.UNKNOWN
+      message = error
     }
 
-    console.log(!!message)
-
-
-    dispatch(codeActions.set({ codeMsg: {
-      code: code,
-      message: message || successMsg
-    }}))
+    dispatch(codeActions.set({
+      codeMsg: {
+        code,
+        message: message || successMsg
+      }
+    }))
   }
 
-  return processResponse;
+  return processResponse
 }
 
-export default useCodeTypeDispatch;
+export default useCodeTypeDispatch

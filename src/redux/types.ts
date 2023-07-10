@@ -1,24 +1,24 @@
-import CodeType from "../model/CodeType";
-import UserData from "../model/UserData";
+import CodeType from '../model/CodeType'
+import UserData from '../model/UserData'
 
-export type AuthState = {
-  user: UserData;
-};
+export interface AuthState {
+  user: UserData
+}
 
-export type AuthRole = null | (typeof roles)[number];
+export type AuthRole = null | (typeof roles)[number]
 
-const roles = ["admin", "user"];
+const roles = ['admin', 'user']
 
-export const isRole = (role: any): boolean => roles.includes(role);
+export const isRole = (role: any): boolean => roles.includes(role)
 
-export type CodeState = {
+export interface CodeState {
   codeMsg: {
-    code: CodeType;
-    message: string;
+    code: CodeType
+    message: string
   }
-};
+}
 
-export type RootState = {
-  authState: AuthState;
-  codeState: CodeState;
-};
+export interface RootState {
+  authState: AuthState
+  codeState: CodeState
+}

@@ -1,27 +1,30 @@
-import { useEffect, useState } from "react";
-import { employeesService } from "../config/service-config";
-import Employee from "../model/Employee";
-import useCodeTypeDispatch from "./useCodeTypeDispatch";
+import { useEffect, useState } from 'react'
+import { employeesService } from '../config/service-config'
+import Employee from '../model/Employee'
+import useCodeTypeDispatch from './useCodeTypeDispatch'
 
 const useEmployees = () => {
-  const [employees, setEmployees] = useState<Employee[]>([]);
-  const dispatchCode = useCodeTypeDispatch();
+  const [employees, setEmployees] = useState<Employee[]>([])
+  const dispatchCode = useCodeTypeDispatch()
 
   useEffect(() => {
     const subscription = employeesService.getEmployees().subscribe({
-      next(res: Employee[] | string) {
+      next (res: Employee[] | string) {
         let error = ''
-        if (typeof res === "string") {
-          error = res;
+        if (typeof res === 'string') {
+          error = res
         } else {
-          setEmployees(res);
+          setEmployees(res.map((empl: any) => ({
+            ...empl,
+            birthDate: new Date(empl.birthDate)
+          })))
         }
-        dispatchCode("", error);
-      },
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-  return employees;
-};
+        dispatchCode('', error)
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+  return employees
+}
 
-export default useEmployees;
+export default useEmployees

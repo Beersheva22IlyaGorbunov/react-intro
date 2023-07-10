@@ -1,6 +1,6 @@
-type ChartPoint = {
-  name: string;
-  value: number;
-};
+interface ChartPoint {
+  name: string
+  value: number
+}
 
-export default ChartPoint;
+export default ChartPoint

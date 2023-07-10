@@ -1,10 +1,10 @@
-type Employee = {
-  id?: number;
-  name: string;
-  salary: number;
-  birthDate: Date;
-  department: string;
+interface Employee {
+  id?: any
+  name: string
+  salary: number
+  birthDate: Date
+  department: string
   gender: 'male' | 'female'
-};
+}
 
-export default Employee;
+export default Employee

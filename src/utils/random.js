@@ -1,20 +1,20 @@
-export function getRandomInt(min, max) {
-  return Math.trunc(Math.random() * (max - min) + min);
+export function getRandomInt (min, max) {
+  return Math.trunc(Math.random() * (max - min) + min)
 }
 
-export function getRandomIntMatrix(rows, cols, min, max) {
-  return Array.from({length: rows}).map(() => getRandomIntArray(cols, min, max));
+export function getRandomIntMatrix (rows, cols, min, max) {
+  return Array.from({ length: rows }).map(() => getRandomIntArray(cols, min, max))
 }
 
-export function getRandomIntArray(length, min, max) {
-  return Array.from({length}).map(() => getRandomInt(min, max))
+export function getRandomIntArray (length, min, max) {
+  return Array.from({ length }).map(() => getRandomInt(min, max))
 }
 
-export function getRandomElement(arr) {
-  return arr[getRandomInt(0, arr.length)];
+export function getRandomElement (arr) {
+  return arr[getRandomInt(0, arr.length)]
 }
 
-export function getRandomEmployee({
+export function getRandomEmployee ({
   departments,
   minSalary,
   maxSalary,
@@ -22,48 +22,48 @@ export function getRandomEmployee({
   maxYear,
   salaryStep
 }) {
-  const minBirthYear = minYear;
-  const maxBirthYear = maxYear;
-  const gender = getRandomGender();
+  const minBirthYear = minYear
+  const maxBirthYear = maxYear
+  const gender = getRandomGender()
   return {
-    name: gender === "male" ? getRandomMaleName() : getRandomFemaleName(),
+    name: gender === 'male' ? getRandomMaleName() : getRandomFemaleName(),
     birthDate: new Date(getRandomInt(minBirthYear, maxBirthYear + 1), getRandomInt(0, 12), getRandomInt(0, 32)),
-    gender: gender,
+    gender,
     salary: getRandomInt(minSalary / salaryStep, maxSalary / salaryStep) * salaryStep,
-    department: getRandomElement(departments),
-  };
+    department: getRandomElement(departments)
+  }
 }
 
-export function getRandomMaleName() {
+export function getRandomMaleName () {
   return getRandomElement([
-    "James",
-    "John",
-    "William",
-    "Michael",
-    "David",
-    "Daniel",
-    "Robert",
-    "Joseph",
-    "Christopher",
-    "Matthew",
-  ]);
+    'James',
+    'John',
+    'William',
+    'Michael',
+    'David',
+    'Daniel',
+    'Robert',
+    'Joseph',
+    'Christopher',
+    'Matthew'
+  ])
 }
 
-export function getRandomFemaleName() {
+export function getRandomFemaleName () {
   return getRandomElement([
-    "Mary",
-    "Jennifer",
-    "Linda",
-    "Susan",
-    "Sarah",
-    "Karen",
-    "Emily",
-    "Jessica",
-    "Elizabeth",
-    "Michelle",
-  ]);
+    'Mary',
+    'Jennifer',
+    'Linda',
+    'Susan',
+    'Sarah',
+    'Karen',
+    'Emily',
+    'Jessica',
+    'Elizabeth',
+    'Michelle'
+  ])
 }
 
-export function getRandomGender() {
-  return getRandomElement(["male", "female"]);
+export function getRandomGender () {
+  return getRandomElement(['male', 'female'])
 }

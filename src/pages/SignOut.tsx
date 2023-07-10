@@ -1,8 +1,8 @@
-import { Box, Button, Modal, Typography } from "@mui/material";
-import React from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { signOut } from "../redux/slices/AuthSlice";
+import { Box, Button, Modal, Typography } from '@mui/material'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { signOut } from '../redux/slices/AuthSlice'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -17,33 +17,35 @@ const style = {
   border: '2px solid',
   borderColor: 'error.main',
   boxShadow: 24,
-  p: 4,
-};
+  p: 4
+}
 
 const SignOut: React.FC = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  function handleLogOut(): void {
-    dispatch(signOut());
+  function handleLogOut (): void {
+    dispatch(signOut())
   }
 
-  return <Modal
+  return (
+    <Modal
       open
       onClose={() => navigate(-1)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      aria-labelledby='modal-modal-title'
+      aria-describedby='modal-modal-description'
     >
       <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        Sign out
+        <Typography id='modal-modal-title' variant='h6' component='h2'>
+          Sign out
         </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        <Typography id='modal-modal-description' sx={{ mt: 2 }}>
           Are you sure, that you want to sign out?
         </Typography>
-        <Button onClick={handleLogOut} sx={{ mt: 2 }} variant="outlined" color="error">Logout</Button>
+        <Button onClick={handleLogOut} sx={{ mt: 2 }} variant='outlined' color='error'>Logout</Button>
       </Box>
     </Modal>
-};
+  )
+}
 
 export default SignOut

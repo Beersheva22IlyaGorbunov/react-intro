@@ -1,23 +1,23 @@
-import { List, ListItem } from "@mui/material";
-import React from "react";
-import Employee from "../model/Employee";
-import EmployeeCard from "./EmployeeCard";
+import { List, ListItem } from '@mui/material'
+import React from 'react'
+import Employee from '../model/Employee'
+import EmployeeCard from './EmployeeCard'
 
-type Props = {
-  employees: Employee[];
-  role: string | undefined;
-  onRemoveEmplClick: (id: number) => void;
-  onUpdateEmplClick: (employee: Employee) => void;
-};
+interface Props {
+  employees: Employee[]
+  role: string | undefined
+  onRemoveEmplClick: (id: number) => void
+  onUpdateEmplClick: (employee: Employee) => void
+}
 
 const EmployeesList: React.FC<Props> = ({
   employees,
   role,
   onRemoveEmplClick,
-  onUpdateEmplClick,
+  onUpdateEmplClick
 }) => {
   return (
-    <List sx={{height: "100%", overflowY: "scroll"}}>
+    <List sx={{ height: '100%', overflowY: 'scroll' }}>
       {employees.map((employee) => (
         <ListItem key={employee.id}>
           <EmployeeCard
@@ -29,7 +29,7 @@ const EmployeesList: React.FC<Props> = ({
         </ListItem>
       ))}
     </List>
-  );
-};
+  )
+}
 
-export default EmployeesList;
+export default EmployeesList

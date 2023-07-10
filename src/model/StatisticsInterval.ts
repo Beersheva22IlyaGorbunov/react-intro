@@ -1,8 +1,8 @@
-type StatisticsInterval = {
-  id: number;
-  min: number;
-  max: number;
-  amount: number;
-};
+interface StatisticsInterval {
+  id: number
+  min: number
+  max: number
+  amount: number
+}
 
-export default StatisticsInterval;
+export default StatisticsInterval
