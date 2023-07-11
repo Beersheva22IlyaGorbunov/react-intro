@@ -74,6 +74,13 @@ const Employees: React.FC = () => {
                 onUpdateEmplClick={setEmployeeToUpdate}
               />
               )}
+              {/* <EmployeesTable
+                employees={employees}
+                role={userData?.role}
+                truncated={isPortrait}
+                onRemoveEmplClick={setRemoveEmplId}
+                onUpdateEmplClick={setEmployeeToUpdate}
+              /> */}
         </Box>
       </Paper>
       {(employeeToUpdate != null) && (

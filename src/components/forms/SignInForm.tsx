@@ -9,7 +9,7 @@ import Container from '@mui/material/Container'
 import LoginData from '../../model/LoginData'
 import ActionResult from '../../model/ActionResult'
 import { useState } from 'react'
-import { Alert } from '@mui/material'
+import { Alert, Stack } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import { Login } from '@mui/icons-material'
 
@@ -41,25 +41,26 @@ export const SignInForm: React.FC<Props> = ({ onSignIn }) => {
   return (
     <Container component='main' maxWidth='xs'>
       <CssBaseline />
-      <Box
+      <Stack
         sx={{
-          marginTop: 8,
+          // marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
-        <Box component='form' onChange={() => setLoginRes(undefined)} onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component='form' onChange={() => setLoginRes(undefined)} onSubmit={handleSubmit} noValidate>
           <TextField
             margin='normal'
             required
             fullWidth
+            size="small"
             id='email'
             label='Email Address'
             name='email'
@@ -70,6 +71,7 @@ export const SignInForm: React.FC<Props> = ({ onSignIn }) => {
             margin='normal'
             required
             fullWidth
+            size="small"
             name='password'
             label='Password'
             type='password'
@@ -83,13 +85,13 @@ export const SignInForm: React.FC<Props> = ({ onSignIn }) => {
             endIcon={<Login />}
             loadingPosition='end'
             variant='contained'
-            sx={{ mt: 2, mb: 2 }}
+            sx={{ my: 2}}
           >
             Sign In
           </LoadingButton>
           {(loginRes != null) && <Alert severity={loginRes.status}>{loginRes.message}</Alert>}
         </Box>
-      </Box>
+      </Stack>
     </Container>
   )
 }

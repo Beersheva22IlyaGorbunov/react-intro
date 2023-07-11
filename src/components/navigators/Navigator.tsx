@@ -44,7 +44,7 @@ const Navigator: React.FC<Props> = ({ menuPoints }) => {
 
   function getTabs (): JSX.Element[] {
     return menuPoints.map((elem) => (
-      <Tab key={elem.title} label={elem.title} component={Link} to={elem.path} />
+      <Tab sx={{'&:hover': {color: "black"}}} key={elem.title} label={elem.title} component={Link} to={elem.path} />
     ))
   }
 

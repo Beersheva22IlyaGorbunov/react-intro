@@ -21,12 +21,15 @@ import { codeActions } from './redux/slices/CodeSlice'
 import { useAuthSelector, useCodeSelector } from './redux/store'
 import { CodeState } from './redux/types'
 
+const DEVELOPMENT_MODE = "development"
+
 export interface MenuPoint {
   title: string
   path: string
   element: ReactElement
   order?: number
   forRoles: Array<string | null>
+  isDevelopment?: boolean
 }
 
 const menuPoints: MenuPoint[] = [
@@ -56,6 +59,14 @@ const menuPoints: MenuPoint[] = [
     forRoles: ['admin', 'user']
   },
   {
+    title: 'Employee generator',
+    element: <EmployeeGenerator />,
+    order: 4,
+    path: 'employees/generate',
+    forRoles: ['admin'],
+    isDevelopment: true
+  },
+  {
     title: 'Sign In',
     element: <SignIn />,
     order: 999,
@@ -71,25 +82,9 @@ const menuPoints: MenuPoint[] = [
   }
 ]
 
-const productionMenuPoints: MenuPoint[] = []
-const developmentMenuPoints: MenuPoint[] = [
-  {
-    title: 'Employee generator',
-    element: <EmployeeGenerator />,
-    order: 4,
-    path: 'employees/generate',
-    forRoles: ['admin']
-  }
-]
-
 function getCurrentPoints (role: string | null, mode: string): MenuPoint[] {
-  const menuPointForMode = menuPoints.slice()
-  if (mode === 'production') {
-    menuPointForMode.push(...productionMenuPoints)
-  } else {
-    menuPointForMode.push(...developmentMenuPoints)
-  }
-  return menuPointForMode
+  const pointForMode = mode === DEVELOPMENT_MODE ? menuPoints : menuPoints.filter((point) => point.isDevelopment !== true)
+  return pointForMode
     .filter((point) => point.forRoles.includes(role || null))
     .sort((a, b) => {
       let res = 0
